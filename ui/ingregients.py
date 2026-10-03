@@ -15,7 +15,9 @@ class IngredientsPage:
         self.create_widgets()
         self.load_menu_items()
         self.load_inventory_items()
-        self.load_ingredients()
+
+        # Start with no dish selected
+        self.menu_combo.set("")
 
     def create_widgets(self):
 
@@ -26,91 +28,158 @@ class IngredientsPage:
         )
         title.pack(pady=15)
 
+        # -----------------------------
+        # MENU ITEM SELECTION
+        # -----------------------------
+
+        menu_frame = tk.Frame(self.parent)
+        menu_frame.pack(pady=5)
+
+        tk.Label(
+            menu_frame,
+            text="Menu Item:",
+            font=("Arial", 11, "bold")
+        ).pack(side="left", padx=5)
+
+        self.menu_combo = ttk.Combobox(
+            menu_frame,
+            width=35,
+            state="readonly"
+        )
+        self.menu_combo.pack(side="left", padx=5)
+
+        self.menu_combo.bind(
+            "<<ComboboxSelected>>",
+            self.load_recipe
+        )
+
+        # -----------------------------
+        # ADD INGREDIENT
+        # -----------------------------
+
         form = tk.Frame(self.parent)
         form.pack(pady=10)
 
         tk.Label(
             form,
-            text="Menu Item",
-            font=("Arial", 11)
+            text="Inventory Item:"
         ).grid(row=0, column=0, padx=5, pady=5)
-
-        self.menu_combo = ttk.Combobox(
-            form,
-            width=30,
-            state="readonly"
-        )
-        self.menu_combo.grid(row=0, column=1, padx=5, pady=5)
-
-        tk.Label(
-            form,
-            text="Inventory Item",
-            font=("Arial", 11)
-        ).grid(row=1, column=0, padx=5, pady=5)
 
         self.inventory_combo = ttk.Combobox(
             form,
             width=30,
             state="readonly"
         )
-        self.inventory_combo.grid(row=1, column=1, padx=5, pady=5)
+        self.inventory_combo.grid(
+            row=0,
+            column=1,
+            padx=5,
+            pady=5
+        )
 
         tk.Label(
             form,
-            text="Quantity Used",
-            font=("Arial", 11)
-        ).grid(row=2, column=0, padx=5, pady=5)
+            text="Quantity Used:"
+        ).grid(row=0, column=2, padx=5, pady=5)
 
         self.quantity_entry = tk.Entry(
             form,
-            width=33
+            width=15
         )
-        self.quantity_entry.grid(row=2, column=1, padx=5, pady=5)
+        self.quantity_entry.grid(
+            row=0,
+            column=3,
+            padx=5,
+            pady=5
+        )
+
+        tk.Button(
+            form,
+            text="Add Ingredient",
+            width=15,
+            command=self.add_ingredient
+        ).grid(
+            row=0,
+            column=4,
+            padx=5,
+            pady=5
+        )
+
+        # -----------------------------
+        # DELETE BUTTON
+        # -----------------------------
 
         button_frame = tk.Frame(self.parent)
-        button_frame.pack(pady=10)
+        button_frame.pack(pady=5)
 
         tk.Button(
             button_frame,
-            text="Add",
-            width=12,
-            command=self.add_ingredient
-        ).grid(row=0, column=0, padx=5)
-
-        tk.Button(
-            button_frame,
-            text="Delete",
-            width=12,
+            text="Delete Ingredient",
+            width=18,
             command=self.delete_ingredient
-        ).grid(row=0, column=1, padx=5)
+        ).pack(side="left", padx=5)
 
         tk.Button(
             button_frame,
-            text="Clear",
+            text="Refresh",
             width=12,
-            command=self.clear_fields
-        ).grid(row=0, column=2, padx=5)
+            command=self.load_recipe
+        ).pack(side="left", padx=5)
+
+        # -----------------------------
+        # RECIPE TREE
+        # -----------------------------
 
         self.tree = ttk.Treeview(
             self.parent,
             columns=(
                 "ID",
-                "MenuItem",
                 "InventoryItem",
+                "Unit",
                 "QuantityUsed"
             ),
             show="headings"
         )
 
-        self.tree.heading("ID", text="ID")
-        self.tree.heading("MenuItem", text="Menu Item")
-        self.tree.heading("InventoryItem", text="Inventory Item")
-        self.tree.heading("QuantityUsed", text="Quantity Used")
+        self.tree.heading(
+            "ID",
+            text="ID"
+        )
 
-        self.tree.column("ID", width=60)
-        self.tree.column("MenuItem", width=220)
-        self.tree.column("InventoryItem", width=220)
-        self.tree.column("QuantityUsed", width=120)
+        self.tree.heading(
+            "InventoryItem",
+            text="Inventory Item"
+        )
+
+        self.tree.heading(
+            "Unit",
+            text="Unit"
+        )
+
+        self.tree.heading(
+            "QuantityUsed",
+            text="Quantity Used"
+        )
+
+        self.tree.column(
+            "ID",
+            width=60
+        )
+
+        self.tree.column(
+            "InventoryItem",
+            width=250
+        )
+
+        self.tree.column(
+            "Unit",
+            width=100
+        )
+
+        self.tree.column(
+            "QuantityUsed",
+            width=150
+        )
 
         self.tree.pack(
             fill="both",
@@ -118,6 +187,10 @@ class IngredientsPage:
             padx=20,
             pady=20
         )
+
+    # ------------------------------------------------
+    # LOAD MENU ITEMS
+    # ------------------------------------------------
 
     def load_menu_items(self):
 
@@ -140,12 +213,21 @@ class IngredientsPage:
             values = []
 
             for row in rows:
-                values.append(f"{row[0]} - {row[1]}")
+                values.append(
+                    f"{row[0]} - {row[1]}"
+                )
 
             self.menu_combo["values"] = values
 
         except Exception as e:
-            messagebox.showerror("Error", str(e))
+            messagebox.showerror(
+                "Error",
+                str(e)
+            )
+
+    # ------------------------------------------------
+    # LOAD INVENTORY ITEMS
+    # ------------------------------------------------
 
     def load_inventory_items(self):
 
@@ -168,35 +250,53 @@ class IngredientsPage:
             values = []
 
             for row in rows:
-                values.append(f"{row[0]} - {row[1]} ({row[2]})")
+                values.append(
+                    f"{row[0]} - {row[1]} ({row[2]})"
+                )
 
             self.inventory_combo["values"] = values
 
         except Exception as e:
-            messagebox.showerror("Error", str(e))
+            messagebox.showerror(
+                "Error",
+                str(e)
+            )
 
-    def load_ingredients(self):
+    # ------------------------------------------------
+    # LOAD RECIPE FOR SELECTED MENU ITEM
+    # ------------------------------------------------
+
+    def load_recipe(self, event=None):
 
         for item in self.tree.get_children():
             self.tree.delete(item)
 
+        menu_value = self.menu_combo.get()
+
+        if not menu_value:
+            return
+
+        menu_id = int(
+            menu_value.split(" - ")[0]
+        )
+
         try:
+
             connection = get_connection()
             cursor = connection.cursor()
 
             cursor.execute("""
                 SELECT
                     mii.MenuItemIngredientID,
-                    mi.ItemName,
                     i.ItemName,
+                    i.Unit,
                     mii.QuantityUsed
                 FROM MenuItemIngredients mii
-                INNER JOIN MenuItems mi
-                    ON mii.menuItem_id = mi.menuItem_id
                 INNER JOIN Inventory i
                     ON mii.InventoryID = i.InventoryID
-                ORDER BY mi.ItemName, i.ItemName
-            """)
+                WHERE mii.menuItem_id = ?
+                ORDER BY i.ItemName
+            """, (menu_id,))
 
             rows = cursor.fetchall()
 
@@ -216,7 +316,14 @@ class IngredientsPage:
                 )
 
         except Exception as e:
-            messagebox.showerror("Error", str(e))
+            messagebox.showerror(
+                "Error",
+                str(e)
+            )
+
+    # ------------------------------------------------
+    # ADD INGREDIENT
+    # ------------------------------------------------
 
     def add_ingredient(self):
 
@@ -246,6 +353,7 @@ class IngredientsPage:
             return
 
         try:
+
             quantity = float(quantity)
 
             if quantity <= 0:
@@ -256,19 +364,28 @@ class IngredientsPage:
                 return
 
         except ValueError:
+
             messagebox.showwarning(
                 "Warning",
                 "Please enter a valid quantity."
             )
             return
 
-        try:
+        menu_id = int(
+            menu_value.split(" - ")[0]
+        )
 
-            menu_id = int(menu_value.split(" - ")[0])
-            inventory_id = int(inventory_value.split(" - ")[0])
+        inventory_id = int(
+            inventory_value.split(" - ")[0]
+        )
+
+        try:
 
             connection = get_connection()
             cursor = connection.cursor()
+
+            # Check whether this ingredient
+            # is already used in this recipe
 
             cursor.execute("""
                 SELECT MenuItemIngredientID
@@ -283,12 +400,14 @@ class IngredientsPage:
             existing = cursor.fetchone()
 
             if existing:
+
                 connection.close()
 
                 messagebox.showwarning(
                     "Warning",
-                    "This ingredient is already added to this menu item."
+                    "This ingredient is already added to this dish."
                 )
+
                 return
 
             cursor.execute("""
@@ -313,24 +432,42 @@ class IngredientsPage:
                 "Ingredient added successfully."
             )
 
-            self.clear_fields()
-            self.load_ingredients()
+            self.inventory_combo.set("")
+            self.quantity_entry.delete(
+                0,
+                "end"
+            )
+
+            self.load_recipe()
 
         except Exception as e:
-            messagebox.showerror("Error", str(e))
+
+            messagebox.showerror(
+                "Error",
+                str(e)
+            )
+
+    # ------------------------------------------------
+    # DELETE INGREDIENT
+    # ------------------------------------------------
 
     def delete_ingredient(self):
 
         selected = self.tree.selection()
 
         if not selected:
+
             messagebox.showwarning(
                 "Warning",
                 "Please select an ingredient."
             )
+
             return
 
-        values = self.tree.item(selected[0], "values")
+        values = self.tree.item(
+            selected[0],
+            "values"
+        )
 
         ingredient_id = values[0]
 
@@ -360,13 +497,11 @@ class IngredientsPage:
                 "Ingredient deleted successfully."
             )
 
-            self.load_ingredients()
+            self.load_recipe()
 
         except Exception as e:
-            messagebox.showerror("Error", str(e))
 
-    def clear_fields(self):
-
-        self.menu_combo.set("")
-        self.inventory_combo.set("")
-        self.quantity_entry.delete(0, "end")
+            messagebox.showerror(
+                "Error",
+                str(e)
+            )

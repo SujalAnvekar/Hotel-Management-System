@@ -281,16 +281,23 @@ class PaymentPage:
 
             return
 
+        connection = None
+
         try:
 
             connection = get_connection()
             cursor = connection.cursor()
 
-            # Get bill amount
+            # -----------------------------------------
+            # GET BILL DETAILS
+            # -----------------------------------------
+
             cursor.execute("""
-                SELECT TotalAmount
-                FROM Bills
-                WHERE BillID = ?
+                SELECT
+                    b.TotalAmount,
+                    b.OrderID
+                FROM Bills b
+                WHERE b.BillID = ?
             """, (
                 self.selected_bill_id,
             ))
@@ -308,11 +315,13 @@ class PaymentPage:
 
                 return
 
-            bill_amount = float(
-                bill[0]
-            )
+            bill_amount = float(bill[0])
+            order_id = bill[1]
 
-            # Check payment amount
+            # -----------------------------------------
+            # CHECK PAYMENT AMOUNT
+            # -----------------------------------------
+
             if amount != bill_amount:
 
                 connection.close()
@@ -324,7 +333,145 @@ class PaymentPage:
 
                 return
 
-            # Create payment
+            # -----------------------------------------
+            # CHECK WHETHER RECIPE EXISTS
+            # FOR EVERY ORDER ITEM
+            # -----------------------------------------
+
+            cursor.execute("""
+                SELECT
+                    mi.ItemName
+                FROM OrderItems oi
+                INNER JOIN MenuItems mi
+                    ON oi.menuItem_id = mi.menuItem_id
+                LEFT JOIN MenuItemIngredients mii
+                    ON oi.menuItem_id = mii.menuItem_id
+                WHERE oi.OrderID = ?
+                GROUP BY
+                    mi.menuItem_id,
+                    mi.ItemName
+                HAVING COUNT(mii.MenuItemIngredientID) = 0
+            """, (
+                order_id,
+            ))
+
+            missing_recipe = cursor.fetchone()
+
+            if missing_recipe:
+
+                connection.close()
+
+                messagebox.showwarning(
+                    "Recipe Missing",
+                    f"No ingredients have been added for "
+                    f"{missing_recipe[0]}."
+                )
+
+                return
+
+            # -----------------------------------------
+            # CALCULATE REQUIRED INVENTORY
+            # -----------------------------------------
+
+            cursor.execute("""
+                SELECT
+                    i.InventoryID,
+                    i.ItemName,
+                    i.Unit,
+                    i.Quantity,
+                    i.MinimumQuantity,
+                    SUM(
+                        oi.Quantity * mii.QuantityUsed
+                    ) AS RequiredQuantity
+                FROM OrderItems oi
+
+                INNER JOIN MenuItemIngredients mii
+                    ON oi.menuItem_id = mii.menuItem_id
+
+                INNER JOIN Inventory i
+                    ON mii.InventoryID = i.InventoryID
+
+                WHERE oi.OrderID = ?
+
+                GROUP BY
+                    i.InventoryID,
+                    i.ItemName,
+                    i.Unit,
+                    i.Quantity,
+                    i.MinimumQuantity
+            """, (
+                order_id,
+            ))
+
+            inventory_rows = cursor.fetchall()
+
+            # -----------------------------------------
+            # CHECK STOCK
+            # -----------------------------------------
+
+            for row in inventory_rows:
+
+                inventory_id = row[0]
+                item_name = row[1]
+                unit = row[2]
+                current_quantity = float(row[3])
+                minimum_quantity = float(row[4])
+                required_quantity = float(row[5])
+
+                if current_quantity < required_quantity:
+
+                    connection.close()
+
+                    messagebox.showwarning(
+                        "Insufficient Stock",
+                        f"Not enough {item_name}.\n\n"
+                        f"Available: {current_quantity:.3f} {unit}\n"
+                        f"Required: {required_quantity:.3f} {unit}"
+                    )
+
+                    return
+
+            # -----------------------------------------
+            # DEDUCT INVENTORY
+            # -----------------------------------------
+
+            low_stock_items = []
+
+            for row in inventory_rows:
+
+                inventory_id = row[0]
+                item_name = row[1]
+                unit = row[2]
+                current_quantity = float(row[3])
+                minimum_quantity = float(row[4])
+                required_quantity = float(row[5])
+
+                new_quantity = (
+                    current_quantity - required_quantity
+                )
+
+                cursor.execute("""
+                    UPDATE Inventory
+                    SET Quantity = ?
+                    WHERE InventoryID = ?
+                """, (
+                    new_quantity,
+                    inventory_id
+                ))
+
+                # Check low stock after deduction
+
+                if new_quantity <= minimum_quantity:
+
+                    low_stock_items.append(
+                        f"{item_name}: "
+                        f"{new_quantity:.3f} {unit}"
+                    )
+
+            # -----------------------------------------
+            # CREATE PAYMENT
+            # -----------------------------------------
+
             cursor.execute("""
                 INSERT INTO Payments
                 (
@@ -339,30 +486,51 @@ class PaymentPage:
                 amount
             ))
 
-            # Mark order as Completed
+            # -----------------------------------------
+            # MARK ORDER COMPLETED
+            # -----------------------------------------
+
             cursor.execute("""
                 UPDATE Orders
                 SET Status = 'Completed'
-                WHERE OrderID = (
-                    SELECT OrderID
-                    FROM Bills
-                    WHERE BillID = ?
-                )
+                WHERE OrderID = ?
             """, (
-                self.selected_bill_id,
+                order_id,
             ))
+
+            # -----------------------------------------
+            # SAVE EVERYTHING
+            # -----------------------------------------
 
             connection.commit()
             connection.close()
 
+            # -----------------------------------------
+            # SUCCESS MESSAGE
+            # -----------------------------------------
+
+            message = "Payment completed successfully."
+
+            if low_stock_items:
+
+                message += "\n\nLow Stock Items:\n"
+
+                for item in low_stock_items:
+                    message += f"\n• {item}"
+
             messagebox.showinfo(
                 "Success",
-                "Payment completed successfully."
+                message
             )
 
             self.load_bills()
 
         except Exception as e:
+
+            if connection is not None:
+
+                connection.rollback()
+                connection.close()
 
             messagebox.showerror(
                 "Error",
