@@ -6,7 +6,7 @@ from ui.category import CategoriesPage
 from ui.menu_items import MenuItemsPage
 from ui.orders import OrdersPage
 from ui.kitchen import KitchenPage
-
+from ui.billing import BillingPage
 
 class DashboardWindow:
 
@@ -163,6 +163,18 @@ class DashboardWindow:
                     relief="flat",
                     anchor="w",
                     command=self.open_kitchen
+                )
+            elif item == "Billing":
+
+                button = tk.Button(
+                    sidebar,
+                    text=item,
+                    font=("Arial", 12),
+                    bg="#2c3e50",
+                    fg="white",
+                    relief="flat",
+                    anchor="w",
+                    command=self.open_billing
                 )
             else:
 
@@ -425,3 +437,10 @@ class DashboardWindow:
             widget.destroy()
 
         KitchenPage(self.content)
+
+    def open_billing(self):
+
+        for widget in self.content.winfo_children():
+            widget.destroy()
+
+        BillingPage(self.content)
