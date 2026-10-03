@@ -10,6 +10,7 @@ from ui.billing import BillingPage
 from ui.payment import PaymentPage
 from ui.inventory import InventoryPage
 from ui.reports import ReportsPage
+from ui.ingregients import IngredientsPage
 
 class DashboardWindow:
 
@@ -85,7 +86,7 @@ class DashboardWindow:
             "Billing",
             "Payment",
             "Inventory",
-            "Suppliers",
+            "Ingredients",
             "Expenses",
             "Reports",
             "Settings"
@@ -189,6 +190,17 @@ class DashboardWindow:
                     relief="flat",
                     anchor="w",
                     command=self.open_inventory
+                )
+            elif item == "Ingredients":
+                button = tk.Button(
+                    sidebar,
+                    text=item,
+                    font=("Arial", 12),
+                    bg="#2c3e50",
+                    fg="white",
+                    relief="flat",
+                    anchor="w",
+                    command=self.open_ingredients
                 )
             elif item == "Reports":
 
@@ -491,3 +503,9 @@ class DashboardWindow:
             widget.destroy()
 
         ReportsPage(self.content)
+
+    def open_ingredients(self):
+        for widget in self.content.winfo_children():
+            widget.destroy()
+
+        IngredientsPage(self.content)
