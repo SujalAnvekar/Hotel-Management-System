@@ -7,6 +7,9 @@ from ui.menu_items import MenuItemsPage
 from ui.orders import OrdersPage
 from ui.kitchen import KitchenPage
 from ui.billing import BillingPage
+from ui.payment import PaymentPage
+from ui.inventory import InventoryPage
+from ui.reports import ReportsPage
 
 class DashboardWindow:
 
@@ -80,6 +83,7 @@ class DashboardWindow:
             "Orders",
             "Kitchen",
             "Billing",
+            "Payment",
             "Inventory",
             "Suppliers",
             "Expenses",
@@ -94,50 +98,35 @@ class DashboardWindow:
 
                 button = tk.Button(
                     sidebar,
-                    text=item,
-                    bg="#172033",
-                    fg="white",
-                    activebackground="#24314A",
-                    activeforeground="white",
-                    relief="flat",
-                    bd=0,
-                    anchor="w",
-                    padx=25,
-                    font=("Segoe UI", 10),
-                    cursor="hand2",
+                                        text=item,
+                                        font=("Arial", 12),
+                                        bg="#2c3e50",
+                                        fg="white",
+                                        relief="flat",
+                                        anchor="w",
                     command=self.open_customers
                 )
             elif item == 'Categories':
                  button = tk.Button(
             sidebar,
-            text=item,
-            bg="#172033",
-            fg="white",
-            activebackground="#24314A",
-            activeforeground="white",
-            relief="flat",
-            bd=0,
-            anchor="w",
-            padx=25,
-            font=("Segoe UI", 10),
-            cursor="hand2",
+                                text=item,
+                                font=("Arial", 12),
+                                bg="#2c3e50",
+                                fg="white",
+                                relief="flat",
+                                anchor="w",
             command=self.open_categories
         )
             elif item == "Menu":
 
                 button = tk.Button(
                     sidebar,
-                    text=item,
-                    bg="#172033",
-                    fg="white",
-                    activebackground="#24314A",
-                    activeforeground="white",
-                    relief="flat",
-                    bd=0,
-                    anchor="w",
-                    padx=25,
-                    font=("Segoe UI", 10),
-                    cursor="hand2",
+                                        text=item,
+                                        font=("Arial", 12),
+                                        bg="#2c3e50",
+                                        fg="white",
+                                        relief="flat",
+                                        anchor="w",
                     command=self.open_menu_items
                 )
             elif item == "Orders":
@@ -156,12 +145,12 @@ class DashboardWindow:
 
                 button = tk.Button(
                     sidebar,
-                    text=item,
-                    font=("Arial", 12),
-                    bg="#2c3e50",
-                    fg="white",
-                    relief="flat",
-                    anchor="w",
+                                        text=item,
+                                        font=("Arial", 12),
+                                        bg="#2c3e50",
+                                        fg="white",
+                                        relief="flat",
+                                        anchor="w",
                     command=self.open_kitchen
                 )
             elif item == "Billing":
@@ -175,6 +164,43 @@ class DashboardWindow:
                     relief="flat",
                     anchor="w",
                     command=self.open_billing
+                )
+            elif item == "Payment":
+
+                button = tk.Button(
+                sidebar,
+                text=item,
+                font=("Arial", 12),
+                bg="#2c3e50",
+                fg="white",
+                relief="flat",
+                anchor="w",
+                command=self.open_payment
+            )
+
+            elif item == "Inventory":
+
+                button = tk.Button(
+                    sidebar,
+                    text=item,
+                    font=("Arial", 12),
+                    bg="#2c3e50",
+                    fg="white",
+                    relief="flat",
+                    anchor="w",
+                    command=self.open_inventory
+                )
+            elif item == "Reports":
+
+                button = tk.Button(
+                    sidebar,
+                    text=item,
+                    font=("Arial", 12),
+                    bg="#2c3e50",
+                    fg="white",
+                    relief="flat",
+                    anchor="w",
+                    command=self.open_reports
                 )
             else:
 
@@ -444,3 +470,24 @@ class DashboardWindow:
             widget.destroy()
 
         BillingPage(self.content)
+
+    def open_payment(self):
+
+        for widget in self.content.winfo_children():
+            widget.destroy()
+
+        PaymentPage(self.content)
+
+    def open_inventory(self):
+
+        for widget in self.content.winfo_children():
+            widget.destroy()
+
+        InventoryPage(self.content)
+
+    def open_reports(self):
+
+        for widget in self.content.winfo_children():
+            widget.destroy()
+
+        ReportsPage(self.content)
