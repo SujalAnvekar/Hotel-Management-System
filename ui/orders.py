@@ -64,9 +64,9 @@ class OrdersPage:
         self.order_table.heading("Price",text="Price")
         self.order_table.heading("Quantity",text="Quantity")
         self.order_table.heading("Amount",text="Amount")
+        
         self.order_table.column("menuItem_id",width=60)
         self.order_table.column("itemName",width=250)
-
         self.order_table.column("Price",width=100)
         self.order_table.column("Quantity",width=100)
         self.order_table.column("Amount",width=120)
