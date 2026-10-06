@@ -299,9 +299,9 @@ class CustomersPage:
             ipady=6
         )
 
-    # ==========================================
+   
     # LOAD CUSTOMERS
-    # ==========================================
+
 
     def load_customers(self):
 
@@ -351,9 +351,7 @@ class CustomersPage:
                 str(e)
             )
 
-    # ==========================================
     # SEARCH CUSTOMER
-    # ==========================================
 
     def search_customer(self):
 

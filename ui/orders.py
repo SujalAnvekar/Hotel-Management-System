@@ -9,72 +9,41 @@ class OrdersPage:
     def __init__(self, parent):
 
         self.parent = parent
-
         self.customer_list = []
         self.menu_list = []
         self.current_items = []
-
         self.create_widgets()
         self.load_customers()
         self.load_menu_items()
 
     def create_widgets(self):
-
-        title = tk.Label(
-            self.parent,
-            text="Orders",
-            font=("Arial", 22, "bold")
-        )
+        title = tk.Label(self.parent,text="Orders",font=("Arial", 22, "bold"))
         title.pack(pady=15)
 
         # Customer section
         customer_frame = tk.Frame(self.parent)
         customer_frame.pack(fill="x", padx=20, pady=5)
 
-        tk.Label(
-            customer_frame,
-            text="Customer:"
-        ).pack(side="left", padx=5)
+        tk.Label(customer_frame,text="Customer:").pack(side="left", padx=5)
 
-        self.customer_combo = ttk.Combobox(
-            customer_frame,
-            state="readonly",
-            width=30
-        )
+        self.customer_combo = ttk.Combobox(customer_frame,state="readonly",width=30)
         self.customer_combo.pack(side="left", padx=5)
 
         # Menu item section
         item_frame = tk.Frame(self.parent)
         item_frame.pack(fill="x", padx=20, pady=10)
 
-        tk.Label(
-            item_frame,
-            text="Menu Item:"
-        ).pack(side="left", padx=5)
+        tk.Label(item_frame,text="Menu Item:").pack(side="left", padx=5)
 
-        self.menu_combo = ttk.Combobox(
-            item_frame,
-            state="readonly",
-            width=30
-        )
+        self.menu_combo = ttk.Combobox(item_frame,state="readonly",width=30)
         self.menu_combo.pack(side="left", padx=5)
 
-        tk.Label(
-            item_frame,
-            text="Quantity:"
-        ).pack(side="left", padx=5)
+        tk.Label(item_frame,text="Quantity:").pack(side="left", padx=5)
 
-        self.quantity_entry = tk.Entry(
-            item_frame,
-            width=10
-        )
+        self.quantity_entry = tk.Entry(item_frame,width=10)
         self.quantity_entry.pack(side="left", padx=5)
 
-        add_button = tk.Button(
-            item_frame,
-            text="Add Item",
-            command=self.add_item
-        )
+        add_button = tk.Button(item_frame,text="Add Item",command=self.add_item)
         add_button.pack(side="left", padx=10)
 
         # Order items table
@@ -89,90 +58,28 @@ class OrdersPage:
             "Amount"
         )
 
-        self.order_table = ttk.Treeview(
-            table_frame,
-            columns=columns,
-            show="headings"
-        )
+        self.order_table = ttk.Treeview(table_frame,columns=columns,show="headings")
+        self.order_table.heading("menuItem_id",text="ID")
+        self.order_table.heading("itemName",text="Item Name")
+        self.order_table.heading("Price",text="Price")
+        self.order_table.heading("Quantity",text="Quantity")
+        self.order_table.heading("Amount",text="Amount")
+        self.order_table.column("menuItem_id",width=60)
+        self.order_table.column("itemName",width=250)
 
-        self.order_table.heading(
-            "menuItem_id",
-            text="ID"
-        )
-
-        self.order_table.heading(
-            "itemName",
-            text="Item Name"
-        )
-
-        self.order_table.heading(
-            "Price",
-            text="Price"
-        )
-
-        self.order_table.heading(
-            "Quantity",
-            text="Quantity"
-        )
-
-        self.order_table.heading(
-            "Amount",
-            text="Amount"
-        )
-
-        self.order_table.column(
-            "menuItem_id",
-            width=60
-        )
-
-        self.order_table.column(
-            "itemName",
-            width=250
-        )
-
-        self.order_table.column(
-            "Price",
-            width=100
-        )
-
-        self.order_table.column(
-            "Quantity",
-            width=100
-        )
-
-        self.order_table.column(
-            "Amount",
-            width=120
-        )
-
-        self.order_table.pack(
-            fill="both",
-            expand=True
-        )
+        self.order_table.column("Price",width=100)
+        self.order_table.column("Quantity",width=100)
+        self.order_table.column("Amount",width=120)
+        self.order_table.pack(fill="both",expand=True)
 
         # Bottom section
         bottom_frame = tk.Frame(self.parent)
         bottom_frame.pack(fill="x", padx=20, pady=10)
-
-        self.total_label = tk.Label(
-            bottom_frame,
-            text="Total: 0.00",
-            font=("Arial", 16, "bold")
-        )
+        self.total_label = tk.Label(bottom_frame,text="Total: 0.00",font=("Arial", 16, "bold"))
         self.total_label.pack(side="left")
-
-        save_button = tk.Button(
-            bottom_frame,
-            text="Save Order",
-            command=self.save_order
-        )
+        save_button = tk.Button(bottom_frame,text="Save Order",command=self.save_order)
         save_button.pack(side="right", padx=5)
-
-        clear_button = tk.Button(
-            bottom_frame,
-            text="Clear",
-            command=self.clear_order
-        )
+        clear_button = tk.Button(bottom_frame,text="Clear",command=self.clear_order)
         clear_button.pack(side="right", padx=5)
 
     def load_customers(self):
@@ -204,7 +111,6 @@ class OrdersPage:
             self.customer_combo["values"] = customer_names
 
         except Exception as e:
-
             messagebox.showerror(
                 "Error",
                 str(e)
@@ -240,32 +146,20 @@ class OrdersPage:
 
         except Exception as e:
 
-            messagebox.showerror(
-                "Error",
-                str(e)
-            )
+            messagebox.showerror("Error",str(e))
 
     def add_item(self):
-
         menu_index = self.menu_combo.current()
-
         if menu_index == -1:
 
-            messagebox.showwarning(
-                "Warning",
-                "Please select a menu item."
-            )
+            messagebox.showwarning("Warning","Please select a menu item.")
 
             return
 
         quantity_text = self.quantity_entry.get().strip()
 
         if quantity_text == "":
-
-            messagebox.showwarning(
-                "Warning",
-                "Please enter quantity."
-            )
+            messagebox.showwarning("Warning","Please enter quantity.")
 
             return
 
@@ -275,19 +169,13 @@ class OrdersPage:
 
         except ValueError:
 
-            messagebox.showwarning(
-                "Warning",
-                "Quantity must be a number."
-            )
+            messagebox.showwarning("Warning", "Quantity must be a number.")
 
             return
 
         if quantity <= 0:
 
-            messagebox.showwarning(
-                "Warning",
-                "Quantity must be greater than 0."
-            )
+            messagebox.showwarning("Warning","Quantity must be greater than 0.")
 
             return
 
@@ -307,24 +195,12 @@ class OrdersPage:
             "Amount": amount
         })
 
-        self.order_table.insert(
-            "",
-            "end",
-            values=(
-                menu_item_id,
-                item_name,
-                f"{price:.2f}",
-                quantity,
-                f"{amount:.2f}"
-            )
-        )
+        self.order_table.insert("","end",
+            values=(menu_item_id,item_name,f"{price:.2f}",quantity,f"{amount:.2f}"))
 
         self.update_total()
 
-        self.quantity_entry.delete(
-            0,
-            tk.END
-        )
+        self.quantity_entry.delete(0,tk.END)
 
     def update_total(self):
 
@@ -334,9 +210,7 @@ class OrdersPage:
 
             total += item["Amount"]
 
-        self.total_label.config(
-            text=f"Total: {total:.2f}"
-        )
+        self.total_label.config(text=f"Total: {total:.2f}")
 
     def clear_order(self):
 
@@ -348,10 +222,7 @@ class OrdersPage:
 
         self.customer_combo.set("")
         self.menu_combo.set("")
-        self.quantity_entry.delete(
-            0,
-            tk.END
-        )
+        self.quantity_entry.delete(0,tk.END)
 
         self.update_total()
 
@@ -361,19 +232,13 @@ class OrdersPage:
 
         if customer_index == -1:
 
-            messagebox.showwarning(
-                "Warning",
-                "Please select a customer."
-            )
+            messagebox.showwarning("Warning","Please select a customer.")
 
             return
 
         if len(self.current_items) == 0:
 
-            messagebox.showwarning(
-                "Warning",
-                "Please add at least one item."
-            )
+            messagebox.showwarning("Warning","Please add at least one item.")
 
             return
 
@@ -432,16 +297,10 @@ class OrdersPage:
             connection.commit()
             connection.close()
 
-            messagebox.showinfo(
-                "Success",
-                f"Order #{order_id} saved successfully."
-            )
+            messagebox.showinfo("Success",f"Order #{order_id} saved successfully.")
 
             self.clear_order()
 
         except Exception as e:
 
-            messagebox.showerror(
-                "Error",
-                str(e)
-            )
+            messagebox.showerror("Error",str(e))
