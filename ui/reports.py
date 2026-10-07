@@ -1,5 +1,9 @@
 import tkinter as tk
 from tkinter import ttk, messagebox
+import os
+
+from openpyxl import Workbook
+from openpyxl.styles import Font
 
 from database.connection import get_connection
 
@@ -10,8 +14,21 @@ class ReportsPage:
 
         self.parent = parent
 
+        # Create reports folder automatically
+        self.reports_folder = os.path.join(
+            os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+            "reports"
+        )
+
+        if not os.path.exists(self.reports_folder):
+            os.makedirs(self.reports_folder)
+
         self.create_widgets()
         self.load_sales_report()
+
+    # =========================================================
+    # CREATE WIDGETS
+    # =========================================================
 
     def create_widgets(self):
 
@@ -27,7 +44,10 @@ class ReportsPage:
             pady=20
         )
 
-        # Report buttons
+        # =====================================================
+        # REPORT BUTTONS
+        # =====================================================
+
         button_frame = tk.Frame(
             self.parent
         )
@@ -82,7 +102,10 @@ class ReportsPage:
             padx=5
         )
 
-        # Summary
+        # =====================================================
+        # SUMMARY
+        # =====================================================
+
         summary_frame = tk.Frame(
             self.parent
         )
@@ -115,7 +138,10 @@ class ReportsPage:
             padx=20
         )
 
-        # Report table
+        # =====================================================
+        # REPORT TABLE
+        # =====================================================
+
         table_frame = tk.Frame(
             self.parent
         )
@@ -239,21 +265,75 @@ class ReportsPage:
 
         self.tree["columns"] = columns
 
-        self.tree.heading("BillID", text="Bill ID")
-        self.tree.heading("OrderID", text="Order ID")
-        self.tree.heading("BillDate", text="Bill Date")
-        self.tree.heading("SubTotal", text="Subtotal")
-        self.tree.heading("TaxAmount", text="Tax")
-        self.tree.heading("DiscountAmount", text="Discount")
-        self.tree.heading("TotalAmount", text="Total")
+        self.tree.heading(
+            "BillID",
+            text="Bill ID"
+        )
 
-        self.tree.column("BillID", width=70)
-        self.tree.column("OrderID", width=80)
-        self.tree.column("BillDate", width=150)
-        self.tree.column("SubTotal", width=100)
-        self.tree.column("TaxAmount", width=100)
-        self.tree.column("DiscountAmount", width=100)
-        self.tree.column("TotalAmount", width=120)
+        self.tree.heading(
+            "OrderID",
+            text="Order ID"
+        )
+
+        self.tree.heading(
+            "BillDate",
+            text="Bill Date"
+        )
+
+        self.tree.heading(
+            "SubTotal",
+            text="Subtotal"
+        )
+
+        self.tree.heading(
+            "TaxAmount",
+            text="Tax"
+        )
+
+        self.tree.heading(
+            "DiscountAmount",
+            text="Discount"
+        )
+
+        self.tree.heading(
+            "TotalAmount",
+            text="Total"
+        )
+
+        self.tree.column(
+            "BillID",
+            width=70
+        )
+
+        self.tree.column(
+            "OrderID",
+            width=80
+        )
+
+        self.tree.column(
+            "BillDate",
+            width=150
+        )
+
+        self.tree.column(
+            "SubTotal",
+            width=100
+        )
+
+        self.tree.column(
+            "TaxAmount",
+            width=100
+        )
+
+        self.tree.column(
+            "DiscountAmount",
+            width=100
+        )
+
+        self.tree.column(
+            "TotalAmount",
+            width=120
+        )
 
         try:
 
@@ -312,12 +392,139 @@ class ReportsPage:
                 text=f"Total Sales: ₹{total_sales:.2f}"
             )
 
+            # Automatically save Excel
+            self.export_sales_to_excel(rows)
+
         except Exception as e:
 
             messagebox.showerror(
                 "Error",
                 str(e)
             )
+
+    # =========================================================
+    # EXPORT SALES TO EXCEL
+    # =========================================================
+
+    def export_sales_to_excel(self, rows):
+
+        try:
+
+            file_path = os.path.join(
+                self.reports_folder,
+                "Sales_Report.xlsx"
+            )
+
+            workbook = Workbook()
+
+            worksheet = workbook.active
+            worksheet.title = "Sales Report"
+
+            headers = [
+                "Bill ID",
+                "Order ID",
+                "Bill Date",
+                "Subtotal",
+                "Tax Amount",
+                "Discount Amount",
+                "Total Amount"
+            ]
+
+            # Header row
+            for column, header in enumerate(headers, start=1):
+
+                cell = worksheet.cell(
+                    row=1,
+                    column=column,
+                    value=header
+                )
+
+                cell.font = Font(
+                    bold=True
+                )
+
+            # Data
+            for row_number, row in enumerate(rows, start=2):
+
+                worksheet.cell(
+                    row=row_number,
+                    column=1,
+                    value=row[0]
+                )
+
+                worksheet.cell(
+                    row=row_number,
+                    column=2,
+                    value=row[1]
+                )
+
+                worksheet.cell(
+                    row=row_number,
+                    column=3,
+                    value=row[2]
+                )
+
+                worksheet.cell(
+                    row=row_number,
+                    column=4,
+                    value=float(row[3])
+                )
+
+                worksheet.cell(
+                    row=row_number,
+                    column=5,
+                    value=float(row[4])
+                )
+
+                worksheet.cell(
+                    row=row_number,
+                    column=6,
+                    value=float(row[5])
+                )
+
+                worksheet.cell(
+                    row=row_number,
+                    column=7,
+                    value=float(row[6])
+                )
+
+            # Column widths
+            worksheet.column_dimensions["A"].width = 12
+            worksheet.column_dimensions["B"].width = 12
+            worksheet.column_dimensions["C"].width = 25
+            worksheet.column_dimensions["D"].width = 15
+            worksheet.column_dimensions["E"].width = 15
+            worksheet.column_dimensions["F"].width = 18
+            worksheet.column_dimensions["G"].width = 15
+
+            # Currency formatting
+            for row_number in range(2, len(rows) + 2):
+
+                worksheet.cell(
+                    row=row_number,
+                    column=4
+                ).number_format = '₹#,##0.00'
+
+                worksheet.cell(
+                    row=row_number,
+                    column=5
+                ).number_format = '₹#,##0.00'
+
+                worksheet.cell(
+                    row=row_number,
+                    column=6
+                ).number_format = '₹#,##0.00'
+
+                worksheet.cell(
+                    row=row_number,
+                    column=7
+                ).number_format = '₹#,##0.00'
+
+            workbook.save(file_path)
+
+        except Exception as e:
+
+            print("Sales Excel Error:", e)
 
     # =========================================================
     # ORDERS REPORT
@@ -338,17 +545,55 @@ class ReportsPage:
 
         self.tree["columns"] = columns
 
-        self.tree.heading("OrderID", text="Order ID")
-        self.tree.heading("Customer", text="Customer")
-        self.tree.heading("OrderDate", text="Order Date")
-        self.tree.heading("Status", text="Status")
-        self.tree.heading("TotalAmount", text="Total Amount")
+        self.tree.heading(
+            "OrderID",
+            text="Order ID"
+        )
 
-        self.tree.column("OrderID", width=80)
-        self.tree.column("Customer", width=180)
-        self.tree.column("OrderDate", width=160)
-        self.tree.column("Status", width=120)
-        self.tree.column("TotalAmount", width=120)
+        self.tree.heading(
+            "Customer",
+            text="Customer"
+        )
+
+        self.tree.heading(
+            "OrderDate",
+            text="Order Date"
+        )
+
+        self.tree.heading(
+            "Status",
+            text="Status"
+        )
+
+        self.tree.heading(
+            "TotalAmount",
+            text="Total Amount"
+        )
+
+        self.tree.column(
+            "OrderID",
+            width=80
+        )
+
+        self.tree.column(
+            "Customer",
+            width=180
+        )
+
+        self.tree.column(
+            "OrderDate",
+            width=160
+        )
+
+        self.tree.column(
+            "Status",
+            width=120
+        )
+
+        self.tree.column(
+            "TotalAmount",
+            width=120
+        )
 
         try:
 
@@ -402,12 +647,108 @@ class ReportsPage:
                 text=f"Order Amount: ₹{total_amount:.2f}"
             )
 
+            # Automatically save Excel
+            self.export_orders_to_excel(rows)
+
         except Exception as e:
 
             messagebox.showerror(
                 "Error",
                 str(e)
             )
+
+    # =========================================================
+    # EXPORT ORDERS TO EXCEL
+    # =========================================================
+
+    def export_orders_to_excel(self, rows):
+
+        try:
+
+            file_path = os.path.join(
+                self.reports_folder,
+                "Orders_Report.xlsx"
+            )
+
+            workbook = Workbook()
+
+            worksheet = workbook.active
+            worksheet.title = "Orders Report"
+
+            headers = [
+                "Order ID",
+                "Customer",
+                "Order Date",
+                "Status",
+                "Total Amount"
+            ]
+
+            # Header row
+            for column, header in enumerate(headers, start=1):
+
+                cell = worksheet.cell(
+                    row=1,
+                    column=column,
+                    value=header
+                )
+
+                cell.font = Font(
+                    bold=True
+                )
+
+            # Data
+            for row_number, row in enumerate(rows, start=2):
+
+                worksheet.cell(
+                    row=row_number,
+                    column=1,
+                    value=row[0]
+                )
+
+                worksheet.cell(
+                    row=row_number,
+                    column=2,
+                    value=row[1]
+                )
+
+                worksheet.cell(
+                    row=row_number,
+                    column=3,
+                    value=row[2]
+                )
+
+                worksheet.cell(
+                    row=row_number,
+                    column=4,
+                    value=row[3]
+                )
+
+                worksheet.cell(
+                    row=row_number,
+                    column=5,
+                    value=float(row[4])
+                )
+
+            # Column widths
+            worksheet.column_dimensions["A"].width = 12
+            worksheet.column_dimensions["B"].width = 25
+            worksheet.column_dimensions["C"].width = 25
+            worksheet.column_dimensions["D"].width = 15
+            worksheet.column_dimensions["E"].width = 18
+
+            # Currency formatting
+            for row_number in range(2, len(rows) + 2):
+
+                worksheet.cell(
+                    row=row_number,
+                    column=5
+                ).number_format = '₹#,##0.00'
+
+            workbook.save(file_path)
+
+        except Exception as e:
+
+            print("Orders Excel Error:", e)
 
     # =========================================================
     # PAYMENT REPORT
@@ -429,19 +770,65 @@ class ReportsPage:
 
         self.tree["columns"] = columns
 
-        self.tree.heading("PaymentID", text="Payment ID")
-        self.tree.heading("BillID", text="Bill ID")
-        self.tree.heading("OrderID", text="Order ID")
-        self.tree.heading("PaymentDate", text="Payment Date")
-        self.tree.heading("PaymentMethod", text="Payment Method")
-        self.tree.heading("Amount", text="Amount")
+        self.tree.heading(
+            "PaymentID",
+            text="Payment ID"
+        )
 
-        self.tree.column("PaymentID", width=90)
-        self.tree.column("BillID", width=80)
-        self.tree.column("OrderID", width=80)
-        self.tree.column("PaymentDate", width=160)
-        self.tree.column("PaymentMethod", width=130)
-        self.tree.column("Amount", width=120)
+        self.tree.heading(
+            "BillID",
+            text="Bill ID"
+        )
+
+        self.tree.heading(
+            "OrderID",
+            text="Order ID"
+        )
+
+        self.tree.heading(
+            "PaymentDate",
+            text="Payment Date"
+        )
+
+        self.tree.heading(
+            "PaymentMethod",
+            text="Payment Method"
+        )
+
+        self.tree.heading(
+            "Amount",
+            text="Amount"
+        )
+
+        self.tree.column(
+            "PaymentID",
+            width=90
+        )
+
+        self.tree.column(
+            "BillID",
+            width=80
+        )
+
+        self.tree.column(
+            "OrderID",
+            width=80
+        )
+
+        self.tree.column(
+            "PaymentDate",
+            width=160
+        )
+
+        self.tree.column(
+            "PaymentMethod",
+            width=130
+        )
+
+        self.tree.column(
+            "Amount",
+            width=120
+        )
 
         try:
 
