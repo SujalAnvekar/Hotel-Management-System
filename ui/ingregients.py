@@ -28,9 +28,7 @@ class IngredientsPage:
         )
         title.pack(pady=15)
 
-        # -----------------------------
         # MENU ITEM SELECTION
-        # -----------------------------
 
         menu_frame = tk.Frame(self.parent)
         menu_frame.pack(pady=5)
@@ -53,9 +51,7 @@ class IngredientsPage:
             self.load_recipe
         )
 
-        # -----------------------------
         # ADD INGREDIENT
-        # -----------------------------
 
         form = tk.Frame(self.parent)
         form.pack(pady=10)
@@ -105,9 +101,7 @@ class IngredientsPage:
             pady=5
         )
 
-        # -----------------------------
         # DELETE BUTTON
-        # -----------------------------
 
         button_frame = tk.Frame(self.parent)
         button_frame.pack(pady=5)
@@ -126,9 +120,7 @@ class IngredientsPage:
             command=self.load_recipe
         ).pack(side="left", padx=5)
 
-        # -----------------------------
         # RECIPE TREE
-        # -----------------------------
 
         self.tree = ttk.Treeview(
             self.parent,
@@ -188,9 +180,7 @@ class IngredientsPage:
             pady=20
         )
 
-    # ------------------------------------------------
     # LOAD MENU ITEMS
-    # ------------------------------------------------
 
     def load_menu_items(self):
 
@@ -225,9 +215,7 @@ class IngredientsPage:
                 str(e)
             )
 
-    # ------------------------------------------------
     # LOAD INVENTORY ITEMS
-    # ------------------------------------------------
 
     def load_inventory_items(self):
 
@@ -262,9 +250,7 @@ class IngredientsPage:
                 str(e)
             )
 
-    # ------------------------------------------------
     # LOAD RECIPE FOR SELECTED MENU ITEM
-    # ------------------------------------------------
 
     def load_recipe(self, event=None):
 
@@ -321,9 +307,7 @@ class IngredientsPage:
                 str(e)
             )
 
-    # ------------------------------------------------
     # ADD INGREDIENT
-    # ------------------------------------------------
 
     def add_ingredient(self):
 
@@ -384,8 +368,7 @@ class IngredientsPage:
             connection = get_connection()
             cursor = connection.cursor()
 
-            # Check whether this ingredient
-            # is already used in this recipe
+            # Check whether this ingredient is already used in this recipe
 
             cursor.execute("""
                 SELECT MenuItemIngredientID
@@ -447,9 +430,7 @@ class IngredientsPage:
                 str(e)
             )
 
-    # ------------------------------------------------
     # DELETE INGREDIENT
-    # ------------------------------------------------
 
     def delete_ingredient(self):
 

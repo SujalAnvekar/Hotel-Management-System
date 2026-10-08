@@ -15,9 +15,7 @@ class MenuItemsPage:
         self.create_widgets()
         self.load_menu_items()
 
-    # ==========================================
     # CREATE PAGE
-    # ==========================================
 
     def create_widgets(self):
 
@@ -27,9 +25,7 @@ class MenuItemsPage:
 
         tk.Label(title_frame,text="Menu Items",bg="#F5F6FA",fg="#172033",font=("Segoe UI", 24, "bold")).pack(side="left")
 
-        # ======================================
         # Search Area
-        # ======================================
 
         search_frame = tk.Frame(self.frame,bg="#F5F6FA")
         search_frame.pack(fill="x",padx=30,pady=(0, 15))
@@ -50,9 +46,7 @@ class MenuItemsPage:
         relief="flat",bd=0,font=("Segoe UI", 10, "bold"),cursor="hand2",command=self.add_menu_item).pack(
         side="right",ipadx=10,ipady=5)
 
-        # ======================================
         # Table
-        # ======================================
 
         table_frame = tk.Frame(self.frame,bg="white")
         table_frame.pack(fill="both",expand=True,padx=30,pady=(0, 15))
@@ -129,9 +123,7 @@ class MenuItemsPage:
             ipady=6
         )
 
-    # ==========================================
     # LOAD MENU ITEMS
-    # ==========================================
 
     def load_menu_items(self):
         for row in self.menu_table.get_children():
@@ -514,9 +506,7 @@ class MenuItemsPage:
 
         item_entry.focus()
 
-    # ==========================================
     # DELETE MENU ITEM
-    # ==========================================
 
     def delete_menu_item(self):
 
