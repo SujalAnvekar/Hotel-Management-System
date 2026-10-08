@@ -26,10 +26,8 @@ class ReportsPage:
         self.create_widgets()
         self.load_sales_report()
 
-    # =========================================================
     # CREATE WIDGETS
-    # =========================================================
-
+    
     def create_widgets(self):
 
         title = tk.Label(
@@ -44,9 +42,7 @@ class ReportsPage:
             pady=20
         )
 
-        # =====================================================
         # REPORT BUTTONS
-        # =====================================================
 
         button_frame = tk.Frame(
             self.parent
@@ -102,10 +98,7 @@ class ReportsPage:
             padx=5
         )
 
-        # =====================================================
         # SUMMARY
-        # =====================================================
-
         summary_frame = tk.Frame(
             self.parent
         )
@@ -138,9 +131,7 @@ class ReportsPage:
             padx=20
         )
 
-        # =====================================================
         # REPORT TABLE
-        # =====================================================
 
         table_frame = tk.Frame(
             self.parent
@@ -244,9 +235,9 @@ class ReportsPage:
             expand=True
         )
 
-    # =========================================================
+
     # SALES REPORT
-    # =========================================================
+
 
     def load_sales_report(self):
 
@@ -402,9 +393,7 @@ class ReportsPage:
                 str(e)
             )
 
-    # =========================================================
     # EXPORT SALES TO EXCEL
-    # =========================================================
 
     def export_sales_to_excel(self, rows):
 
@@ -526,9 +515,7 @@ class ReportsPage:
 
             print("Sales Excel Error:", e)
 
-    # =========================================================
     # ORDERS REPORT
-    # =========================================================
 
     def load_orders_report(self):
 
@@ -657,9 +644,7 @@ class ReportsPage:
                 str(e)
             )
 
-    # =========================================================
     # EXPORT ORDERS TO EXCEL
-    # =========================================================
 
     def export_orders_to_excel(self, rows):
 
@@ -750,9 +735,7 @@ class ReportsPage:
 
             print("Orders Excel Error:", e)
 
-    # =========================================================
     # PAYMENT REPORT
-    # =========================================================
 
     def load_payment_report(self):
 
@@ -891,9 +874,8 @@ class ReportsPage:
                 str(e)
             )
 
-    # =========================================================
+
     # INVENTORY REPORT
-    # =========================================================
 
     def load_inventory_report(self):
 

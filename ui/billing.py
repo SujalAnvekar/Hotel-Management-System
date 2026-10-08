@@ -245,7 +245,8 @@ class BillingPage:
         except Exception as e:
 
             messagebox.showerror("Error",str(e))
-    # CALCULTE TOTA
+    # CALCULTE TOTAl
+    # BILL LOGIC
     def calculate_total(self):
 
         try:

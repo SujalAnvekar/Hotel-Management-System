@@ -27,15 +27,11 @@ class CustomersPage:
         # Load customers
         self.load_customers()
 
-    # ==========================================
     # CREATE PAGE
-    # ==========================================
 
     def create_widgets(self):
 
-        # --------------------------------------
         # Title
-        # --------------------------------------
 
         title_frame = tk.Frame(
             self.frame,
@@ -58,9 +54,9 @@ class CustomersPage:
             side="left"
         )
 
-        # --------------------------------------
+        
         # Search Area
-        # --------------------------------------
+        
 
         search_frame = tk.Frame(
             self.frame,
@@ -153,9 +149,9 @@ class CustomersPage:
             ipady=5
         )
 
-        # --------------------------------------
+        
         # Table Frame
-        # --------------------------------------
+        
 
         table_frame = tk.Frame(
             self.frame,
@@ -245,9 +241,9 @@ class CustomersPage:
             width=180
         )
 
-        # --------------------------------------
+        
         # Bottom Buttons
-        # --------------------------------------
+        
 
         button_frame = tk.Frame(
             self.frame,
@@ -414,9 +410,7 @@ class CustomersPage:
                 str(e)
             )
 
-    # ==========================================
     # ADD CUSTOMER
-    # ==========================================
 
     def add_customer(self):
 
@@ -442,10 +436,8 @@ class CustomersPage:
             self.frame.winfo_toplevel()
         )
 
-        # --------------------------------------
+        
         # Title
-        # --------------------------------------
-
         tk.Label(
             add_window,
             text="Add Customer",
@@ -455,9 +447,9 @@ class CustomersPage:
             pady=(25, 20)
         )
 
-        # --------------------------------------
+        
         # Full Name
-        # --------------------------------------
+        
 
         tk.Label(
             add_window,
@@ -480,9 +472,9 @@ class CustomersPage:
             ipady=6
         )
 
-        # --------------------------------------
+        
         # phone
-        # --------------------------------------
+        
 
         tk.Label(
             add_window,
@@ -505,9 +497,9 @@ class CustomersPage:
             ipady=6
         )
 
-        # --------------------------------------
+        
         # Save Customer
-        # --------------------------------------
+        
 
         def save_customer():
 
@@ -571,9 +563,9 @@ class CustomersPage:
                     str(e)
                 )
 
-        # --------------------------------------
+        
         # Buttons
-        # --------------------------------------
+        
 
         button_frame = tk.Frame(
             add_window
@@ -620,9 +612,7 @@ class CustomersPage:
 
         name_entry.focus()
 
-    # ==========================================
     # EDIT CUSTOMER
-    # ==========================================
 
     def edit_customer(self):
 
@@ -647,9 +637,9 @@ class CustomersPage:
         old_name = values[1]
         old_phone = values[2]
 
-        # --------------------------------------
+        
         # Edit Window
-        # --------------------------------------
+        
 
         edit_window = tk.Toplevel(
             self.frame
@@ -668,9 +658,9 @@ class CustomersPage:
             False
         )
 
-        # --------------------------------------
+        
         # Title
-        # --------------------------------------
+        
 
         tk.Label(
             edit_window,
@@ -681,9 +671,9 @@ class CustomersPage:
             pady=(25, 20)
         )
 
-        # --------------------------------------
+        
         # Name
-        # --------------------------------------
+        
 
         tk.Label(
             edit_window,
@@ -711,9 +701,9 @@ class CustomersPage:
             old_name
         )
 
-        # --------------------------------------
+        
         # phone
-        # --------------------------------------
+        
 
         tk.Label(
             edit_window,
@@ -741,9 +731,9 @@ class CustomersPage:
             old_phone
         )
 
-        # --------------------------------------
+        
         # Update Customer
-        # --------------------------------------
+        
 
         def update_customer():
 
@@ -803,9 +793,9 @@ class CustomersPage:
                     str(e)
                 )
 
-        # --------------------------------------
+        
         # Buttons
-        # --------------------------------------
+        
 
         button_frame = tk.Frame(
             edit_window
@@ -852,9 +842,7 @@ class CustomersPage:
 
         name_entry.focus()
 
-    # ==========================================
     # DELETE CUSTOMER
-    # ==========================================
 
     def delete_customer(self):
 
