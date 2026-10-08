@@ -324,6 +324,19 @@ class InventoryPage:
             expand=True
         )
 
+        # Low stock row styling
+        self.tree.tag_configure(
+            "low_stock",
+            foreground="#DC2626",
+            background="#FEE2E2"
+        )
+
+        self.tree.tag_configure(
+            "available",
+            foreground="#166534",
+            background="#F0FDF4"
+        )
+
         self.tree.bind(
             "<<TreeviewSelect>>",
             self.select_inventory
@@ -366,8 +379,10 @@ class InventoryPage:
 
                 if quantity <= minimum_quantity:
                     status = "Low Stock"
+                    tag = "low_stock"
                 else:
                     status = "Available"
+                    tag = "available"
 
                 self.tree.insert(
                     "",
@@ -380,7 +395,8 @@ class InventoryPage:
                         f"{minimum_quantity:.2f}",
                         status,
                         created_at
-                    )
+                    ),
+                    tags=(tag,)
                 )
 
         except Exception as e:
@@ -428,8 +444,10 @@ class InventoryPage:
 
                 if quantity <= minimum_quantity:
                     status = "Low Stock"
+                    tag = "low_stock"
                 else:
                     status = "Available"
+                    tag = "available"
 
                 self.tree.insert(
                     "",
@@ -442,7 +460,8 @@ class InventoryPage:
                         f"{minimum_quantity:.2f}",
                         status,
                         row[5]
-                    )
+                    ),
+                    tags=(tag,)
                 )
 
         except Exception as e:
@@ -466,17 +485,45 @@ class InventoryPage:
 
         self.selected_inventory_id = values[0]
 
-        self.item_name_entry.delete(0, "end")
-        self.item_name_entry.insert(0, values[1])
+        self.item_name_entry.delete(
+            0,
+            "end"
+        )
 
-        self.unit_entry.delete(0, "end")
-        self.unit_entry.insert(0, values[2])
+        self.item_name_entry.insert(
+            0,
+            values[1]
+        )
 
-        self.quantity_entry.delete(0, "end")
-        self.quantity_entry.insert(0, values[3])
+        self.unit_entry.delete(
+            0,
+            "end"
+        )
 
-        self.minimum_entry.delete(0, "end")
-        self.minimum_entry.insert(0, values[4])
+        self.unit_entry.insert(
+            0,
+            values[2]
+        )
+
+        self.quantity_entry.delete(
+            0,
+            "end"
+        )
+
+        self.quantity_entry.insert(
+            0,
+            values[3]
+        )
+
+        self.minimum_entry.delete(
+            0,
+            "end"
+        )
+
+        self.minimum_entry.insert(
+            0,
+            values[4]
+        )
 
     def add_inventory(self):
 

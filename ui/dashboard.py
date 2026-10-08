@@ -27,6 +27,11 @@ class DashboardWindow:
         self.root.geometry("1200x700")
         self.root.minsize(1000, 600)
 
+        # Store sidebar buttons
+        self.sidebar_buttons = {}
+
+        # Currently selected menu
+        self.selected_menu = "Dashboard"
 
         self.create_dashboard()
 
@@ -34,20 +39,45 @@ class DashboardWindow:
 
     def create_dashboard(self):
 
-        main_frame = tk.Frame(self.root,bg="#F5F6FA")
-        main_frame.pack(fill="both",expand=True)
-
+        main_frame = tk.Frame(
+            self.root,
+            bg="#F5F6FA"
+        )
+        main_frame.pack(
+            fill="both",
+            expand=True
+        )
 
         # Sidebar
 
-        sidebar = tk.Frame(main_frame,bg="#172033",width=220)
-        sidebar.pack(side="left",fill="y")
+        sidebar = tk.Frame(
+            main_frame,
+            bg="#172033",
+            width=220
+        )
+        sidebar.pack(
+            side="left",
+            fill="y"
+        )
         sidebar.pack_propagate(False)
 
         # Logo
-        tk.Label(sidebar,text="HOTEL\nMANAGEMENT",bg="#172033",fg="white",font=("Segoe UI", 18, "bold"),justify="left").pack(anchor="w",padx=25,pady=(30, 50))
+
+        tk.Label(
+            sidebar,
+            text="HOTEL\nMANAGEMENT",
+            bg="#172033",
+            fg="white",
+            font=("Segoe UI", 18, "bold"),
+            justify="left"
+        ).pack(
+            anchor="w",
+            padx=25,
+            pady=(30, 50)
+        )
 
         # Menu items
+
         menu_items = [
             "Dashboard",
             "Customers",
@@ -63,91 +93,349 @@ class DashboardWindow:
         ]
 
         # Create sidebar buttons
+
         for item in menu_items:
 
             if item == "Dashboard":
 
-                button = tk.Button(sidebar,text=item,font=("Segoe UI", 11, "bold"),bg="#24314A",fg="white",activebackground="#2F405F",activeforeground="white",
-                relief="flat",bd=0,anchor="w",padx=25,cursor="hand2",command=self.show_dashboard)
+                button = tk.Button(
+                    sidebar,
+                    text=item,
+                    font=("Segoe UI", 11, "bold"),
+                    bg="#4F8CFF",
+                    fg="white",
+                    activebackground="#5D96FF",
+                    activeforeground="white",
+                    relief="flat",
+                    bd=0,
+                    anchor="w",
+                    padx=25,
+                    cursor="hand2",
+                    command=self.show_dashboard
+                )
+
+                normal_bg = "#4F8CFF"
+                hover_bg = "#5D96FF"
 
             elif item == "Customers":
 
-                button = tk.Button(sidebar,text=item,font=("Segoe UI", 11),bg="#2c3e50",fg="white",activebackground="#24314A",activeforeground="white",
-                relief="flat",bd=0,anchor="w",padx=25,cursor="hand2",command=self.open_customers)
+                button = tk.Button(
+                    sidebar,
+                    text=item,
+                    font=("Segoe UI", 11),
+                    bg="#2c3e50",
+                    fg="white",
+                    activebackground="#34495E",
+                    activeforeground="white",
+                    relief="flat",
+                    bd=0,
+                    anchor="w",
+                    padx=25,
+                    cursor="hand2",
+                    command=self.open_customers
+                )
+
+                normal_bg = "#2c3e50"
+                hover_bg = "#34495E"
 
             elif item == "Categories":
 
-                button = tk.Button(sidebar,text=item,font=("Segoe UI", 11),bg="#2c3e50",fg="white",activebackground="#24314A",activeforeground="white",
-                relief="flat",bd=0,anchor="w",padx=25,cursor="hand2",command=self.open_categories)
+                button = tk.Button(
+                    sidebar,
+                    text=item,
+                    font=("Segoe UI", 11),
+                    bg="#2c3e50",
+                    fg="white",
+                    activebackground="#34495E",
+                    activeforeground="white",
+                    relief="flat",
+                    bd=0,
+                    anchor="w",
+                    padx=25,
+                    cursor="hand2",
+                    command=self.open_categories
+                )
+
+                normal_bg = "#2c3e50"
+                hover_bg = "#34495E"
 
             elif item == "Menu":
 
-                button = tk.Button(sidebar,text=item,font=("Segoe UI", 11),bg="#2c3e50",fg="white",activebackground="#24314A",activeforeground="white",
-                relief="flat",bd=0,anchor="w",padx=25,cursor="hand2",command=self.open_menu_items)
+                button = tk.Button(
+                    sidebar,
+                    text=item,
+                    font=("Segoe UI", 11),
+                    bg="#2c3e50",
+                    fg="white",
+                    activebackground="#34495E",
+                    activeforeground="white",
+                    relief="flat",
+                    bd=0,
+                    anchor="w",
+                    padx=25,
+                    cursor="hand2",
+                    command=self.open_menu_items
+                )
+
+                normal_bg = "#2c3e50"
+                hover_bg = "#34495E"
 
             elif item == "Orders":
 
-                button = tk.Button(sidebar,text=item,font=("Segoe UI", 11),bg="#2c3e50",fg="white",activebackground="#24314A",activeforeground="white",
-                relief="flat",bd=0,anchor="w",padx=25,cursor="hand2",command=self.open_orders)
+                button = tk.Button(
+                    sidebar,
+                    text=item,
+                    font=("Segoe UI", 11),
+                    bg="#2c3e50",
+                    fg="white",
+                    activebackground="#34495E",
+                    activeforeground="white",
+                    relief="flat",
+                    bd=0,
+                    anchor="w",
+                    padx=25,
+                    cursor="hand2",
+                    command=self.open_orders
+                )
+
+                normal_bg = "#2c3e50"
+                hover_bg = "#34495E"
 
             elif item == "Kitchen":
 
-                button = tk.Button(sidebar,text=item,font=("Segoe UI", 11),bg="#2c3e50",fg="white",activebackground="#24314A",activeforeground="white",
-                relief="flat",bd=0,anchor="w",padx=25,cursor="hand2",command=self.open_kitchen)
+                button = tk.Button(
+                    sidebar,
+                    text=item,
+                    font=("Segoe UI", 11),
+                    bg="#2c3e50",
+                    fg="white",
+                    activebackground="#34495E",
+                    activeforeground="white",
+                    relief="flat",
+                    bd=0,
+                    anchor="w",
+                    padx=25,
+                    cursor="hand2",
+                    command=self.open_kitchen
+                )
+
+                normal_bg = "#2c3e50"
+                hover_bg = "#34495E"
 
             elif item == "Billing":
 
-                button = tk.Button(sidebar,text=item,font=("Segoe UI", 11),bg="#2c3e50",fg="white", activebackground="#24314A",activeforeground="white",
-                relief="flat",bd=0,anchor="w",padx=25,cursor="hand2",command=self.open_billing)
+                button = tk.Button(
+                    sidebar,
+                    text=item,
+                    font=("Segoe UI", 11),
+                    bg="#2c3e50",
+                    fg="white",
+                    activebackground="#34495E",
+                    activeforeground="white",
+                    relief="flat",
+                    bd=0,
+                    anchor="w",
+                    padx=25,
+                    cursor="hand2",
+                    command=self.open_billing
+                )
+
+                normal_bg = "#2c3e50"
+                hover_bg = "#34495E"
 
             elif item == "Payment":
 
-                button = tk.Button(sidebar,text=item,font=("Segoe UI", 11),bg="#2c3e50",fg="white",activebackground="#24314A",activeforeground="white",
-                relief="flat",bd=0,anchor="w",padx=25,cursor="hand2",command=self.open_payment)
+                button = tk.Button(
+                    sidebar,
+                    text=item,
+                    font=("Segoe UI", 11),
+                    bg="#2c3e50",
+                    fg="white",
+                    activebackground="#34495E",
+                    activeforeground="white",
+                    relief="flat",
+                    bd=0,
+                    anchor="w",
+                    padx=25,
+                    cursor="hand2",
+                    command=self.open_payment
+                )
+
+                normal_bg = "#2c3e50"
+                hover_bg = "#34495E"
 
             elif item == "Inventory":
 
-                button = tk.Button(sidebar,text=item,font=("Segoe UI", 11),bg="#2c3e50",fg="white",activebackground="#24314A",activeforeground="white",
-                relief="flat",bd=0,anchor="w",padx=25,cursor="hand2",command=self.open_inventory)
+                button = tk.Button(
+                    sidebar,
+                    text=item,
+                    font=("Segoe UI", 11),
+                    bg="#2c3e50",
+                    fg="white",
+                    activebackground="#34495E",
+                    activeforeground="white",
+                    relief="flat",
+                    bd=0,
+                    anchor="w",
+                    padx=25,
+                    cursor="hand2",
+                    command=self.open_inventory
+                )
+
+                normal_bg = "#2c3e50"
+                hover_bg = "#34495E"
 
             elif item == "Ingredients":
 
-                button = tk.Button(sidebar,text=item,font=("Segoe UI", 11),bg="#2c3e50",fg="white",activebackground="#24314A",activeforeground="white",
-                relief="flat",bd=0,anchor="w",padx=25,cursor="hand2",command=self.open_ingredients)
+                button = tk.Button(
+                    sidebar,
+                    text=item,
+                    font=("Segoe UI", 11),
+                    bg="#2c3e50",
+                    fg="white",
+                    activebackground="#34495E",
+                    activeforeground="white",
+                    relief="flat",
+                    bd=0,
+                    anchor="w",
+                    padx=25,
+                    cursor="hand2",
+                    command=self.open_ingredients
+                )
+
+                normal_bg = "#2c3e50"
+                hover_bg = "#34495E"
 
             elif item == "Reports":
 
-                button = tk.Button(sidebar,text=item,font=("Segoe UI", 11),bg="#2c3e50",fg="white",activebackground="#24314A",activeforeground="white",
-                relief="flat",bd=0,anchor="w",padx=25,cursor="hand2",command=self.open_reports)
-            button.pack(fill="x",pady=2)
+                button = tk.Button(
+                    sidebar,
+                    text=item,
+                    font=("Segoe UI", 11),
+                    bg="#2c3e50",
+                    fg="white",
+                    activebackground="#34495E",
+                    activeforeground="white",
+                    relief="flat",
+                    bd=0,
+                    anchor="w",
+                    padx=25,
+                    cursor="hand2",
+                    command=self.open_reports
+                )
 
+                normal_bg = "#2c3e50"
+                hover_bg = "#34495E"
+
+            # Store button
+
+            self.sidebar_buttons[item] = button
+
+            # Hover effect
+
+            button.bind(
+                "<Enter>",
+                lambda event, b=button, c=hover_bg:
+                b.config(bg=c)
+            )
+
+            button.bind(
+                "<Leave>",
+                lambda event, b=button, name=item:
+                b.config(
+                    bg="#4F8CFF"
+                    if self.selected_menu == name
+                    else "#2c3e50"
+                )
+            )
+
+            button.pack(
+                fill="x",
+                pady=2
+            )
 
         # Content Area
 
-
-        self.content = tk.Frame(main_frame,bg="#F5F6FA")
-        self.content.pack(side="left",fill="both",expand=True)
+        self.content = tk.Frame(
+            main_frame,
+            bg="#F5F6FA"
+        )
+        self.content.pack(
+            side="left",
+            fill="both",
+            expand=True
+        )
 
         # Show dashboard
+
         self.show_dashboard()
+
+    # Select Sidebar Menu
+
+    def select_menu(self, menu_name):
+
+        self.selected_menu = menu_name
+
+        for name, button in self.sidebar_buttons.items():
+
+            if name == menu_name:
+
+                button.config(
+                    bg="#4F8CFF",
+                    fg="white",
+                    font=("Segoe UI", 11, "bold")
+                )
+
+            else:
+
+                button.config(
+                    bg="#2c3e50",
+                    fg="white",
+                    font=("Segoe UI", 11)
+                )
 
     # Dashboard Page
 
     def show_dashboard(self):
 
+        self.select_menu("Dashboard")
+
         # Remove old content
+
         for widget in self.content.winfo_children():
             widget.destroy()
 
-
         # Header
 
-        header = tk.Frame(self.content,bg="#F5F6FA")
-        header.pack(fill="x",padx=35,pady=(25, 15))
+        header = tk.Frame(
+            self.content,
+            bg="#F5F6FA"
+        )
+        header.pack(
+            fill="x",
+            padx=35,
+            pady=(25, 15)
+        )
 
-        tk.Label(header,text="Dashboard",bg="#F5F6FA",fg="#172033",font=("Segoe UI", 24, "bold")).pack(side="left")
-        tk.Label(header,text="Welcome, " + self.user.FullName,bg="#F5F6FA",fg="#6B7280",font=("Segoe UI", 10)).pack(side="right")
+        tk.Label(
+            header,
+            text="Dashboard",
+            bg="#F5F6FA",
+            fg="#172033",
+            font=("Segoe UI", 24, "bold")
+        ).pack(
+            side="left"
+        )
 
+        tk.Label(
+            header,
+            text="Welcome, " + self.user.FullName,
+            bg="#F5F6FA",
+            fg="#6B7280",
+            font=("Segoe UI", 10)
+        ).pack(
+            side="right"
+        )
 
         # Get Dashboard Data
 
@@ -155,32 +443,124 @@ class DashboardWindow:
 
         # Statistics Cards
 
-        stats_frame = tk.Frame(self.content,bg="#F5F6FA")
-        stats_frame.pack(fill="x", padx=35)
-        self.create_card(stats_frame,"Total Orders",str(data["today_orders"]), 0)
-        self.create_card(stats_frame,"Total Sales","₹" + f'{data["today_sales"]:.2f}',1)
-        self.create_card(stats_frame,"Pending Orders",str(data["pending_orders"]),2)
-        self.create_card(stats_frame,"Low Stock Items",str(data["low_stock"]),3)
+        stats_frame = tk.Frame(
+            self.content,
+            bg="#F5F6FA"
+        )
+        stats_frame.pack(
+            fill="x",
+            padx=35
+        )
+
+        self.create_card(
+            stats_frame,
+            "Total Orders",
+            str(data["today_orders"]),
+            0
+        )
+
+        self.create_card(
+            stats_frame,
+            "Total Sales",
+            "₹" + f'{data["today_sales"]:.2f}',
+            1
+        )
+
+        self.create_card(
+            stats_frame,
+            "Pending Orders",
+            str(data["pending_orders"]),
+            2
+        )
+
+        self.create_card(
+            stats_frame,
+            "Low Stock Items",
+            str(data["low_stock"]),
+            3
+        )
 
         # Second Row Cards
 
-        second_stats = tk.Frame(self.content,bg="#F5F6FA")
-        second_stats.pack(fill="x",padx=35,pady=(15, 0))
-        self.create_card(second_stats,"Total Customers",str(data["total_customers"]),0)
-        self.create_card(second_stats,"Total Menu Items",str(data["total_menu_items"]),1)
-        self.create_card(second_stats,"Total Bills",str(data["total_bills"]),2)
-        self.create_card(second_stats,"Total Payments","₹" + f'{data["total_payments"]:.2f}',3)
+        second_stats = tk.Frame(
+            self.content,
+            bg="#F5F6FA"
+        )
+        second_stats.pack(
+            fill="x",
+            padx=35,
+            pady=(15, 0)
+        )
 
+        self.create_card(
+            second_stats,
+            "Total Customers",
+            str(data["total_customers"]),
+            0
+        )
+
+        self.create_card(
+            second_stats,
+            "Total Menu Items",
+            str(data["total_menu_items"]),
+            1
+        )
+
+        self.create_card(
+            second_stats,
+            "Total Bills",
+            str(data["total_bills"]),
+            2
+        )
+
+        self.create_card(
+            second_stats,
+            "Total Payments",
+            "₹" + f'{data["total_payments"]:.2f}',
+            3
+        )
 
         # Recent Orders Section
 
-        recent_frame = tk.Frame(self.content,bg="white")
-        recent_frame.pack(fill="both",expand=True,padx=35,pady=20)
-        tk.Label(recent_frame,text="Recent Orders",bg="white",fg="#172033",font=("Segoe UI", 16, "bold")).pack(anchor="w",padx=20,pady=(15, 10))
+        recent_frame = tk.Frame(
+            self.content,
+            bg="white",
+            highlightbackground="#E2E8F0",
+            highlightcolor="#D5DCE8",
+            highlightthickness=1
+        )
+
+        recent_frame.pack(
+            fill="both",
+            expand=True,
+            padx=35,
+            pady=20
+        )
+
+        tk.Label(
+            recent_frame,
+            text="Recent Orders",
+            bg="white",
+            fg="#172033",
+            font=("Segoe UI", 16, "bold")
+        ).pack(
+            anchor="w",
+            padx=20,
+            pady=(15, 10)
+        )
 
         # Treeview container
-        tree_frame = tk.Frame(recent_frame,bg="white")
-        tree_frame.pack(fill="both", expand=True,padx=20,pady=(0, 15))
+
+        tree_frame = tk.Frame(
+            recent_frame,
+            bg="white"
+        )
+        tree_frame.pack(
+            fill="both",
+            expand=True,
+            padx=20,
+            pady=(0, 15)
+        )
 
         columns = (
             "OrderID",
@@ -190,32 +570,174 @@ class DashboardWindow:
             "TotalAmount"
         )
 
-        tree = ttk.Treeview(tree_frame,columns=columns,show="headings",height=7)
-        tree.heading( "OrderID",text="Order ID")
-        tree.heading("Customer",text="Customer")
-        tree.heading("OrderDate", text="Order Date")
-        tree.heading("Status",text="Status")
-        tree.heading("TotalAmount",text="Amount")
-        tree.column("OrderID",width=80,anchor="center")
-        tree.column("Customer", width=200)
-        tree.column("OrderDate",width=180)
-        tree.column("Status",width=120,anchor="center")
-        tree.column("TotalAmount",width=120,anchor="e")
-        scrollbar = ttk.Scrollbar(tree_frame,orient="vertical",command=tree.yview)
-        tree.configure( yscrollcommand=scrollbar.set)
-        tree.pack(side="left",fill="both",expand=True)
-        scrollbar.pack(side="right",fill="y")
+        # Treeview Style
+
+        style = ttk.Style()
+
+        style.configure(
+            "Dashboard.Treeview",
+            background="white",
+            foreground="#172033",
+            rowheight=34,
+            fieldbackground="white",
+            font=("Segoe UI", 10)
+        )
+
+        style.configure(
+            "Dashboard.Treeview.Heading",
+            background="#EEF2F7",
+            foreground="#172033",
+            font=("Segoe UI", 10, "bold"),
+            padding=8
+        )
+
+        style.map(
+            "Dashboard.Treeview",
+            background=[
+                ("selected", "#DCE8FF")
+            ],
+            foreground=[
+                ("selected", "#172033")
+            ]
+        )
+
+        tree = ttk.Treeview(
+            tree_frame,
+            columns=columns,
+            show="headings",
+            height=7,
+            style="Dashboard.Treeview"
+        )
+
+        tree.heading(
+            "OrderID",
+            text="Order ID"
+        )
+
+        tree.heading(
+            "Customer",
+            text="Customer"
+        )
+
+        tree.heading(
+            "OrderDate",
+            text="Order Date"
+        )
+
+        tree.heading(
+            "Status",
+            text="Status"
+        )
+
+        tree.heading(
+            "TotalAmount",
+            text="Amount"
+        )
+
+        tree.column(
+            "OrderID",
+            width=80,
+            anchor="center"
+        )
+
+        tree.column(
+            "Customer",
+            width=200
+        )
+
+        tree.column(
+            "OrderDate",
+            width=180
+        )
+
+        tree.column(
+            "Status",
+            width=120,
+            anchor="center"
+        )
+
+        tree.column(
+            "TotalAmount",
+            width=120,
+            anchor="e"
+        )
+
+        scrollbar = ttk.Scrollbar(
+            tree_frame,
+            orient="vertical",
+            command=tree.yview
+        )
+
+        tree.configure(
+            yscrollcommand=scrollbar.set
+        )
+
+        tree.pack(
+            side="left",
+            fill="both",
+            expand=True
+        )
+
+        scrollbar.pack(
+            side="right",
+            fill="y"
+        )
+
+        # Status styling
+
+        tree.tag_configure(
+            "Pending",
+            foreground="#D97706"
+        )
+
+        tree.tag_configure(
+            "Preparing",
+            foreground="#2563EB"
+        )
+
+        tree.tag_configure(
+            "Ready",
+            foreground="#059669"
+        )
+
+        tree.tag_configure(
+            "Served",
+            foreground="#16A34A"
+        )
+
+        tree.tag_configure(
+            "Completed",
+            foreground="#070707"
+        )
 
         # Load recent orders
+
         for row in data["recent_orders"]:
 
-            tree.insert("","end", values=(
+            status = str(row[3])
+
+            if status in (
+                "Pending",
+                "Preparing",
+                "Ready",
+                "Served",
+                "Completed"
+            ):
+                tag = status
+            else:
+                tag = ""
+
+            tree.insert(
+                "",
+                "end",
+                values=(
                     row[0],
                     row[1],
                     row[2],
                     row[3],
                     f"₹{float(row[4]):.2f}"
-                )
+                ),
+                tags=(tag,)
             )
 
     # Get Dashboard Data
@@ -242,6 +764,7 @@ class DashboardWindow:
             cursor = connection.cursor()
 
             # Total Orders
+
             cursor.execute("""
                 SELECT COUNT(*)
                 FROM Orders
@@ -251,6 +774,7 @@ class DashboardWindow:
             data["today_orders"] = cursor.fetchone()[0]
 
             # Total Sales
+
             cursor.execute("""
                 SELECT ISNULL(SUM(TotalAmount), 0)
                 FROM Bills
@@ -262,6 +786,7 @@ class DashboardWindow:
             )
 
             # Pending Orders
+
             cursor.execute("""
                 SELECT COUNT(*)
                 FROM Orders
@@ -271,6 +796,7 @@ class DashboardWindow:
             data["pending_orders"] = cursor.fetchone()[0]
 
             # Low Stock Items
+
             cursor.execute("""
                 SELECT COUNT(*)
                 FROM Inventory
@@ -280,6 +806,7 @@ class DashboardWindow:
             data["low_stock"] = cursor.fetchone()[0]
 
             # Total Customers
+
             cursor.execute("""
                 SELECT COUNT(*)
                 FROM Customers
@@ -288,6 +815,7 @@ class DashboardWindow:
             data["total_customers"] = cursor.fetchone()[0]
 
             # Total Menu Items
+
             cursor.execute("""
                 SELECT COUNT(*)
                 FROM MenuItems
@@ -296,6 +824,7 @@ class DashboardWindow:
             data["total_menu_items"] = cursor.fetchone()[0]
 
             # Total Bills
+
             cursor.execute("""
                 SELECT COUNT(*)
                 FROM Bills
@@ -304,6 +833,7 @@ class DashboardWindow:
             data["total_bills"] = cursor.fetchone()[0]
 
             # Total Payments
+
             cursor.execute("""
                 SELECT ISNULL(SUM(Amount), 0)
                 FROM Payments
@@ -314,6 +844,7 @@ class DashboardWindow:
             )
 
             # Recent Orders
+
             cursor.execute("""
                 SELECT TOP 10
                     o.OrderID,
@@ -342,20 +873,117 @@ class DashboardWindow:
 
     # Create Dashboard Card
 
-    def create_card(self,parent,title,value,column):
+    def create_card(self, parent, title, value, column):
 
-        card = tk.Frame(parent,bg="white",height=105)
+        card = tk.Frame(
+            parent,
+            bg="white",
+            height=105,
+            highlightbackground="#E2E8F0",
+            highlightcolor="#4F8CFF",
+            highlightthickness=1
+        )
 
-        card.grid(row=0,column=column,padx=6,sticky="nsew")
+        card.grid(
+            row=0,
+            column=column,
+            padx=6,
+            sticky="nsew"
+        )
 
-        parent.grid_columnconfigure(column, weight=1)
+        parent.grid_columnconfigure(
+            column,
+            weight=1
+        )
 
-        tk.Label(card,text=title,bg="white",fg="#6B7280",font=("Segoe UI", 10)).pack(anchor="w",padx=18,pady=(15, 3))
-        tk.Label(card,text=value,bg="white",fg="#172033",font=("Segoe UI", 20, "bold")).pack(anchor="w",padx=18)
+        title_label = tk.Label(
+            card,
+            text=title,
+            bg="white",
+            fg="#6B7280",
+            font=("Segoe UI", 10)
+        )
+
+        title_label.pack(
+            anchor="w",
+            padx=18,
+            pady=(15, 3)
+        )
+
+        value_label = tk.Label(
+            card,
+            text=value,
+            bg="white",
+            fg="#172033",
+            font=("Segoe UI", 20, "bold")
+        )
+
+        value_label.pack(
+            anchor="w",
+            padx=18
+        )
+
+        # Card hover effect
+
+        card.bind(
+            "<Enter>",
+            lambda event: card.config(
+                highlightbackground="#4F8CFF",
+                highlightcolor="#4F8CFF",
+                highlightthickness=2
+            )
+        )
+
+        card.bind(
+            "<Leave>",
+            lambda event: card.config(
+                highlightbackground="#E2E8F0",
+                highlightcolor="#E2E8F0",
+                highlightthickness=1
+            )
+        )
+
+        title_label.bind(
+            "<Enter>",
+            lambda event: card.config(
+                highlightbackground="#4F8CFF",
+                highlightcolor="#4F8CFF",
+                highlightthickness=2
+            )
+        )
+
+        title_label.bind(
+            "<Leave>",
+            lambda event: card.config(
+                highlightbackground="#E2E8F0",
+                highlightcolor="#E2E8F0",
+                highlightthickness=1
+            )
+        )
+
+        value_label.bind(
+            "<Enter>",
+            lambda event: card.config(
+                highlightbackground="#4F8CFF",
+                highlightcolor="#4F8CFF",
+                highlightthickness=2
+            )
+        )
+
+        value_label.bind(
+            "<Leave>",
+            lambda event: card.config(
+                highlightbackground="#E2E8F0",
+                highlightcolor="#E2E8F0",
+                highlightthickness=1
+            )
+        )
 
     # Open Customers
 
     def open_customers(self):
+
+        self.select_menu("Customers")
 
         for widget in self.content.winfo_children():
             widget.destroy()
@@ -366,6 +994,8 @@ class DashboardWindow:
 
     def open_categories(self):
 
+        self.select_menu("Categories")
+
         for widget in self.content.winfo_children():
             widget.destroy()
 
@@ -374,6 +1004,8 @@ class DashboardWindow:
     # Open Menu Items
 
     def open_menu_items(self):
+
+        self.select_menu("Menu")
 
         for widget in self.content.winfo_children():
             widget.destroy()
@@ -384,6 +1016,8 @@ class DashboardWindow:
 
     def open_orders(self):
 
+        self.select_menu("Orders")
+
         for widget in self.content.winfo_children():
             widget.destroy()
 
@@ -392,6 +1026,8 @@ class DashboardWindow:
     # Open Kitchen
 
     def open_kitchen(self):
+
+        self.select_menu("Kitchen")
 
         for widget in self.content.winfo_children():
             widget.destroy()
@@ -402,6 +1038,8 @@ class DashboardWindow:
 
     def open_billing(self):
 
+        self.select_menu("Billing")
+
         for widget in self.content.winfo_children():
             widget.destroy()
 
@@ -410,6 +1048,8 @@ class DashboardWindow:
     # Open Payment
 
     def open_payment(self):
+
+        self.select_menu("Payment")
 
         for widget in self.content.winfo_children():
             widget.destroy()
@@ -420,6 +1060,8 @@ class DashboardWindow:
 
     def open_inventory(self):
 
+        self.select_menu("Inventory")
+
         for widget in self.content.winfo_children():
             widget.destroy()
 
@@ -429,6 +1071,8 @@ class DashboardWindow:
 
     def open_ingredients(self):
 
+        self.select_menu("Ingredients")
+
         for widget in self.content.winfo_children():
             widget.destroy()
 
@@ -437,6 +1081,8 @@ class DashboardWindow:
     # Open Reports
 
     def open_reports(self):
+
+        self.select_menu("Reports")
 
         for widget in self.content.winfo_children():
             widget.destroy()
