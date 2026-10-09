@@ -288,9 +288,7 @@ class PaymentPage:
             connection = get_connection()
             cursor = connection.cursor()
 
-            # -----------------------------------------
             # GET BILL DETAILS
-            # -----------------------------------------
 
             cursor.execute("""
                 SELECT
@@ -318,9 +316,7 @@ class PaymentPage:
             bill_amount = float(bill[0])
             order_id = bill[1]
 
-            # -----------------------------------------
             # CHECK PAYMENT AMOUNT
-            # -----------------------------------------
 
             if amount != bill_amount:
 
@@ -333,10 +329,7 @@ class PaymentPage:
 
                 return
 
-            # -----------------------------------------
-            # CHECK WHETHER RECIPE EXISTS
-            # FOR EVERY ORDER ITEM
-            # -----------------------------------------
+            # CHECK WHETHER RECIPE EXISTS FOR EVERY ORDER ITEM
 
             cursor.execute("""
                 SELECT
@@ -369,9 +362,7 @@ class PaymentPage:
 
                 return
 
-            # -----------------------------------------
             # CALCULATE REQUIRED INVENTORY
-            # -----------------------------------------
 
             cursor.execute("""
                 SELECT
@@ -405,9 +396,7 @@ class PaymentPage:
 
             inventory_rows = cursor.fetchall()
 
-            # -----------------------------------------
             # CHECK STOCK
-            # -----------------------------------------
 
             for row in inventory_rows:
 
@@ -431,9 +420,7 @@ class PaymentPage:
 
                     return
 
-            # -----------------------------------------
             # DEDUCT INVENTORY
-            # -----------------------------------------
 
             low_stock_items = []
 
@@ -468,9 +455,7 @@ class PaymentPage:
                         f"{new_quantity:.3f} {unit}"
                     )
 
-            # -----------------------------------------
             # CREATE PAYMENT
-            # -----------------------------------------
 
             cursor.execute("""
                 INSERT INTO Payments
@@ -486,9 +471,7 @@ class PaymentPage:
                 amount
             ))
 
-            # -----------------------------------------
             # MARK ORDER COMPLETED
-            # -----------------------------------------
 
             cursor.execute("""
                 UPDATE Orders
@@ -498,16 +481,12 @@ class PaymentPage:
                 order_id,
             ))
 
-            # -----------------------------------------
             # SAVE EVERYTHING
-            # -----------------------------------------
 
             connection.commit()
             connection.close()
 
-            # -----------------------------------------
             # SUCCESS MESSAGE
-            # -----------------------------------------
 
             message = "Payment completed successfully."
 
