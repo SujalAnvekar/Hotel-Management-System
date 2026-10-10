@@ -1,4 +1,4 @@
-#**Hotel Management System**
+## Hotel Management System
 
 A desktop-based Hotel Management System developed using **Python, Tkinter, and Microsoft SQL Server** to streamline food service operations, including customer management, menu management, order processing, kitchen operations, billing, payments, and inventory tracking.
 
