@@ -53,3 +53,113 @@ The application uses **Tkinter** to provide a graphical user interface and **Mic
 - Add menu items with prices.
 - Assign menu items to categories.
 - Search, update, and delete records.
+
+### 🧾 Order Management
+- Select customers and menu items.
+- Add multiple items to an order.
+- Specify item quantities.
+- Calculate item amounts and order totals.
+- Save orders and order details in the database.
+
+### 👨‍🍳 Kitchen Management
+- View active orders.
+- Track order preparation status.
+- Update order status through the kitchen workflow.
+
+### 💰 Billing Management
+- Generate bills for served orders.
+- Calculate subtotal, tax, discount, and final amount.
+- Prevent duplicate bills for the same order.
+
+### 💳 Payment Management
+- Record payments using Cash, Card, or UPI.
+- Associate payments with bills.
+- Mark orders as completed after successful payment.
+
+### 📦 Inventory Management
+- Add, edit, delete, and search inventory items.
+- Track current and minimum stock quantities.
+- Highlight low-stock items in red.
+- Monitor ingredient availability.
+
+### 🧪 Ingredients and Recipes
+- Associate ingredients with menu items.
+- Define ingredient quantities required for each menu item.
+- Calculate ingredient consumption based on order quantities.
+- Support automatic inventory deduction after successful payment.
+
+### 📊 Reports and Dashboard
+- Provide a central dashboard for application navigation.
+- Support business monitoring through reports.
+
+## 🔄 Application Workflow
+
+The following flow represents the main operational process of the system.
+
+```text
+                    ┌──────────────────┐
+                    │    Admin Login   │
+                    └────────┬─────────┘
+                             │
+                             ▼
+                    ┌──────────────────┐
+                    │    Dashboard     │
+                    └────────┬─────────┘
+                             │
+                             ▼
+              ┌────────────────────────────┐
+              │ Manage Customers, Categories│
+              │         and Menu Items      │
+              └──────────────┬─────────────┘
+                             │
+                             ▼
+                    ┌──────────────────┐
+                    │   Create Order   │
+                    └────────┬─────────┘
+                             │
+                             ▼
+                    ┌──────────────────┐
+                    │      Pending     │
+                    └────────┬─────────┘
+                             │
+                             ▼
+                    ┌──────────────────┐
+                    │    Preparing     │
+                    └────────┬─────────┘
+                             │
+                             ▼
+                    ┌──────────────────┐
+                    │       Ready      │
+                    └────────┬─────────┘
+                             │
+                             ▼
+                    ┌──────────────────┐
+                    │      Served      │
+                    └────────┬─────────┘
+                             │
+                             ▼
+                    ┌──────────────────┐
+                    │   Generate Bill  │
+                    └────────┬─────────┘
+                             │
+                             ▼
+                    ┌──────────────────┐
+                    │  Record Payment  │
+                    └────────┬─────────┘
+                             │
+                             ▼
+                    ┌──────────────────┐
+                    │ Payment Success  │
+                    └────────┬─────────┘
+                             │
+                             ▼
+              ┌────────────────────────────┐
+              │ Mark Order as Completed    │
+              │ Deduct Recipe Ingredients  │
+              │ Update Inventory           │
+              └──────────────┬─────────────┘
+                             │
+                             ▼
+                    ┌──────────────────┐
+                    │ Reports / Review │
+                    └──────────────────┘
