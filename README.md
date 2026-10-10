@@ -94,72 +94,32 @@ The application uses **Tkinter** to provide a graphical user interface and **Mic
 
 ## 🔄 Application Workflow
 
-The following flow represents the main operational process of the system.
+```mermaid
+flowchart TD
+    A([Admin Login]) --> B[Dashboard]
 
-```text
-                    ┌──────────────────┐
-                    │    Admin Login   │
-                    └────────┬─────────┘
-                             │
-                             ▼
-                    ┌──────────────────┐
-                    │    Dashboard     │
-                    └────────┬─────────┘
-                             │
-                             ▼
-              ┌────────────────────────────┐
-              │ Manage Customers, Categories│
-              │         and Menu Items      │
-              └──────────────┬─────────────┘
-                             │
-                             ▼
-                    ┌──────────────────┐
-                    │   Create Order   │
-                    └────────┬─────────┘
-                             │
-                             ▼
-                    ┌──────────────────┐
-                    │      Pending     │
-                    └────────┬─────────┘
-                             │
-                             ▼
-                    ┌──────────────────┐
-                    │    Preparing     │
-                    └────────┬─────────┘
-                             │
-                             ▼
-                    ┌──────────────────┐
-                    │       Ready      │
-                    └────────┬─────────┘
-                             │
-                             ▼
-                    ┌──────────────────┐
-                    │      Served      │
-                    └────────┬─────────┘
-                             │
-                             ▼
-                    ┌──────────────────┐
-                    │   Generate Bill  │
-                    └────────┬─────────┘
-                             │
-                             ▼
-                    ┌──────────────────┐
-                    │  Record Payment  │
-                    └────────┬─────────┘
-                             │
-                             ▼
-                    ┌──────────────────┐
-                    │ Payment Success  │
-                    └────────┬─────────┘
-                             │
-                             ▼
-              ┌────────────────────────────┐
-              │ Mark Order as Completed    │
-              │ Deduct Recipe Ingredients  │
-              │ Update Inventory           │
-              └──────────────┬─────────────┘
-                             │
-                             ▼
-                    ┌──────────────────┐
-                    │ Reports / Review │
-                    └──────────────────┘
+    B --> C[Manage Customers]
+    B --> D[Manage Categories and Menu Items]
+    B --> E[Manage Inventory and Recipes]
+
+    C --> F[Create Order]
+    D --> F
+
+    F --> G[Pending]
+    G --> H[Preparing]
+    H --> I[Ready]
+    I --> J[Served]
+
+    J --> K[Generate Bill]
+    K --> L[Process Payment]
+
+    L --> M{Payment Successful?}
+
+    M -- Yes --> N[Mark Order Completed]
+    N --> O[Check Ingredient Stock]
+    O --> P[Deduct Recipe Ingredients]
+    P --> Q[Update Inventory]
+    Q --> R[Reports and Analysis]
+
+    M -- No --> S[Payment Not Completed]
+```
