@@ -1,4 +1,4 @@
-## Hotel Management System
+### Hotel Management System
 
 A desktop-based Hotel Management System developed using **Python, Tkinter, and Microsoft SQL Server** to streamline food service operations, including customer management, menu management, order processing, kitchen operations, billing, payments, and inventory tracking.
 
@@ -34,3 +34,22 @@ The application uses **Tkinter** to provide a graphical user interface and **Mic
 - Generate bills with tax and discount calculations.
 - Automate ingredient stock deduction after successful payment.
 - Monitor inventory levels and identify low-stock items.
+
+## ✨ Key Features
+
+### 🔐 Admin Login
+- Admin login system.
+- Database-based credential validation.
+- Last login tracking.
+
+### 👥 Customer Management
+- Add new customers.
+- View and search customer records.
+- Update customer information.
+- Delete customer records.
+
+### 🍽️ Category and Menu Management
+- Create and manage menu categories.
+- Add menu items with prices.
+- Assign menu items to categories.
+- Search, update, and delete records.
